@@ -1,0 +1,5 @@
+{
+  "name": "@quackware/error",
+  "description": "Custom Error class and error utilities",
+  "version": "0.0.1"
+}
