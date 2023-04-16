@@ -7,6 +7,9 @@ export interface ErrorOptions {
   readonly cause?: unknown;
 }
 
+/**
+ * A lightweight extension of the standard {@linkcode Error} class with some static helper functions added.
+ */
 export class QuackError extends Error {
   static fromUnknown(val: unknown) {
     if (val instanceof Error) {
@@ -24,6 +27,17 @@ export class QuackError extends Error {
     } else {
       return new QuackError({ cause: err, message: err.message, name: err.name });
     }
+  }
+
+  static fromResponse(response: Response) {
+    if (response.ok) {
+      throw new QuackError("Cannot create a new error from a response that is OK!");
+    }
+    return new QuackError({
+      cause: response,
+      message: response.statusText,
+      name: `Response Error: [${response.status}]`,
+    });
   }
 
   static fromValueErrors(errors: ValueError[] | IterableIterator<ValueError>) {
